@@ -1,0 +1,43 @@
+<div class="movie-container">
+  <div class="selector">
+    <mat-form-field appearance="fill">
+      <mat-label>Selecione o gênero</mat-label>
+      <mat-select [(value)]="selectedCategory" (selectionChange)="fetchMovies()">
+        <mat-option *ngFor="let cat of categories" [value]="cat">
+          {{ cat | titlecase }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div class="movie-grid" *ngIf="!loading">
+    <mat-card *ngFor="let movie of movies" class="movie-card">
+      <img
+        mat-card-image
+        [src]="movie.posterURL || defaultPoster"
+        [alt]="movie.title"
+        (error)="onImageError($event)"
+      />
+
+      <mat-card-content>
+        <h3>{{ movie.title }}</h3>
+        <p>ID: {{ movie.id }}</p>
+      </mat-card-content>
+
+      <mat-card-actions class="card-actions">
+        <a
+          mat-stroked-button
+          color="primary"
+          [href]="'https://www.imdb.com/title/' + movie.imdbId"
+          target="_blank"
+        >
+          Ver no IMDb
+        </a>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
